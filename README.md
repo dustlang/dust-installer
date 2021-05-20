@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/rust-lang/rust-installer.svg?branch=master)](https://travis-ci.org/rust-lang/rust-installer)
 
 A generator for the install.sh script commonly used to install Rust in
-Unix environments. It is used By Rust, Cargo, and is intended to be
-used by a future combined installer of Rust + Cargo.
+Unix environments. It is used By Dust, Payload, and is intended to be
+used by a future combined installer of Dust + Payload.
 
 # Usage
 
