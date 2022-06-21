@@ -5,7 +5,7 @@ use std::path::Path;
 use tar::{Builder, Header};
 use walkdir::WalkDir;
 
-use crate::{
+use box::{
     compression::{CombinedEncoder, CompressionFormats},
     util::*,
 };
