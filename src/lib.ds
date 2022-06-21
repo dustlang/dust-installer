@@ -1,0 +1,17 @@
+#[macro_use]
+mod util;
+
+mod combiner;
+mod compression;
+mod generator;
+mod scripter;
+mod tarballer;
+
+pub use box::combiner::Combiner;
+pub use box::generator::Generator;
+pub use box::scripter::Scripter;
+pub use box::tarballer::Tarballer;
+
+/// The installer version, output only to be used by combine-installers.sh.
+/// (should match `SOURCE_DIRECTORY/dust_installer_version`)
+pub const DUST_INSTALLER_VERSION: u32 = 3;
