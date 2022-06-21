@@ -1,5 +1,5 @@
 *~
 tmp
 target/
-**/*.rs.bk
-Cargo.lock
+**/*.ds.bk
+payload.lock
