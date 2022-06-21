@@ -378,7 +378,7 @@ uninstall_components() {
     local _uninstalled_something=false
 
     # First, try removing any 'legacy' manifests from before
-    # rust-installer
+    # dust-installer
     uninstall_legacy "$_abs_libdir"
     assert_nz "$RETVAL", "RETVAL"
     if [ "$RETVAL" = true ]; then
@@ -387,11 +387,11 @@ uninstall_components() {
 
     # Load the version of the installed installer
     local _installed_version=
-    if [ -f "$abs_libdir/$TEMPLATE_REL_MANIFEST_DIR/rust-installer-version" ]; then
-	_installed_version=`cat "$_abs_libdir/$TEMPLATE_REL_MANIFEST_DIR/rust-installer-version"`
+    if [ -f "$abs_libdir/$TEMPLATE_REL_MANIFEST_DIR/dust-installer-version" ]; then
+	_installed_version=`cat "$_abs_libdir/$TEMPLATE_REL_MANIFEST_DIR/dust-installer-version"`
 
 	# Sanity check
-	if [ ! -n "$_installed_version" ]; then critical_err "rust installer version is empty"; fi
+	if [ ! -n "$_installed_version" ]; then critical_err "dust installer version is empty"; fi
     fi
 
     # If there's something installed, then uninstall
@@ -408,13 +408,13 @@ uninstall_components() {
 		;;
 
 	    # This is the current version. Nothing need to be done except uninstall.
-	    "$TEMPLATE_RUST_INSTALLER_VERSION")
+	    "$TEMPLATE_DUST_INSTALLER_VERSION")
 		;;
 
 	    # If this is an unknown (future) version then bail.
 	    * )
 		echo "The copy of $TEMPLATE_PRODUCT_NAME at $_dest_prefix was installed using an"
-		echo "unknown version ($_installed_version) of rust-installer."
+		echo "unknown version ($_installed_version) of dust-installer."
 		echo "Uninstall it first with the installer used for the original installation"
 		echo "before continuing."
 		exit 1
@@ -593,8 +593,8 @@ install_components() {
             # "share/doc/$product/" can be redirected to a single --docdir
             # path. If the following detects that --docdir has been specified
             # then it will replace everything preceeding the "$product" path
-            # component. The problem here is that the combined rust installer
-            # contains two "products": rust and cargo; so the contents of those
+            # component. The problem here is that the combined dust installer
+            # contains two "products": dust and cargo; so the contents of those
             # directories will both be dumped into the same directory; and the
             # contents of those directories are _not_ disjoint. Since this feature
             # is almost entirely to support 'make install' anyway I don't expect
@@ -679,13 +679,13 @@ maybe_configure_ld() {
 	# Fedora-based systems do not configure the dynamic linker to look
 	# /usr/local/lib, which is our default installation directory. To
 	# make things just work, try to put that directory in
-	# /etc/ld.so.conf.d/rust-installer-v1 so ldconfig picks it up.
+	# /etc/ld.so.conf.d/dust-installer-v1 so ldconfig picks it up.
 	# Issue #30.
 	#
 	# This will get rm'd when the last component is uninstalled in
 	# maybe_unconfigure_ld.
 	if [ "$_abs_libdir" = "/usr/local/lib" -a -d "/etc/ld.so.conf.d" ]; then
-	    echo "$_abs_libdir" > "/etc/ld.so.conf.d/rust-installer-v1-$TEMPLATE_REL_MANIFEST_DIR.conf"
+	    echo "$_abs_libdir" > "/etc/ld.so.conf.d/dust-installer-v1-$TEMPLATE_REL_MANIFEST_DIR.conf"
 	    if [ $? -ne 0 ]; then
 		# This shouldn't happen if we've gotten this far
 		# installing to /usr/local
@@ -714,7 +714,7 @@ maybe_unconfigure_ld() {
 	return 0
     fi
 
-    rm "/etc/ld.so.conf.d/rust-installer-v1-$TEMPLATE_REL_MANIFEST_DIR.conf" 2> /dev/null
+    rm "/etc/ld.so.conf.d/dust-installer-v1-$TEMPLATE_REL_MANIFEST_DIR.conf" 2> /dev/null
     # Above may fail since that file may not have been created on install
 }
 
@@ -748,12 +748,12 @@ do_preflight_sanity_checks() {
     verbose_msg "verifying destination is writable"
     make_dir_recursive "$CFG_LIBDIR"
     need_ok "can't write to destination. consider \`sudo\`."
-    touch "$CFG_LIBDIR/rust-install-probe" > /dev/null
+    touch "$CFG_LIBDIR/dust-install-probe" > /dev/null
     if [ $? -ne 0 ]
     then
 	err "can't write to destination. consider \`sudo\`."
     fi
-    rm "$CFG_LIBDIR/rust-install-probe"
+    rm "$CFG_LIBDIR/dust-install-probe"
     need_ok "failed to remove install probe"
 
     # Sanity check: don't install to the directory containing the installer.
@@ -842,16 +842,16 @@ validate_opt
 # These names surrounded by '%%` are replaced by sed when generating install.sh
 # FIXME: Might want to consider loading this from a file and not generating install.sh
 
-# Rust or Cargo
+# Dust or Payload
 TEMPLATE_PRODUCT_NAME=%%TEMPLATE_PRODUCT_NAME%%
-# rustlib or cargo
+# dustlib or payload
 TEMPLATE_REL_MANIFEST_DIR=%%TEMPLATE_REL_MANIFEST_DIR%%
-# 'Rust is ready to roll.' or 'Cargo is cool to cruise.'
+# 'Dust is ready to roll.' or 'Payload is cool to cruise.'
 TEMPLATE_SUCCESS_MESSAGE=%%TEMPLATE_SUCCESS_MESSAGE%%
 # Locations to look for directories containing legacy, pre-versioned manifests
 TEMPLATE_LEGACY_MANIFEST_DIRS=%%TEMPLATE_LEGACY_MANIFEST_DIRS%%
 # The installer version
-TEMPLATE_RUST_INSTALLER_VERSION=%%TEMPLATE_RUST_INSTALLER_VERSION%%
+TEMPLATE_DUST_INSTALLER_VERSION=%%TEMPLATE_DUST_INSTALLER_VERSION%%
 
 # OK, let's get installing ...
 
