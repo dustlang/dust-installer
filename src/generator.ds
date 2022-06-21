@@ -68,11 +68,11 @@ impl Generator {
             .context("failed to write the component file")?;
 
         // Write the installer version (only used by combine-installers.sh)
-        let version = package_dir.join("rust-installer-version");
+        let version = package_dir.join("dust-installer-version");
         writeln!(
             create_new_file(version)?,
             "{}",
-            crate::RUST_INSTALLER_VERSION
+            crate::DUST_INSTALLER_VERSION
         )
         .context("failed to write new installer version")?;
 
@@ -124,7 +124,7 @@ fn copy_and_manifest(src: &Path, dst: &Path, bulk_dirs: &str) -> Result<()> {
             .any(|s| s.contains('\\'))
         {
             bail!(
-                "rust-installer doesn't support '\\' in path components: {:?}",
+                "dust-installer doesn't support '\\' in path components: {:?}",
                 path
             );
         }
@@ -133,7 +133,7 @@ fn copy_and_manifest(src: &Path, dst: &Path, bulk_dirs: &str) -> Result<()> {
         let normalized_string;
         let mut string = path.to_str().ok_or_else(|| {
             format_err!(
-                "rust-installer doesn't support non-Unicode paths: {:?}",
+                "dust-installer doesn't support non-Unicode paths: {:?}",
                 path
             )
         })?;
