@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/rust-lang/rust-installer.svg?branch=master)](https://travis-ci.org/rust-lang/rust-installer)
-
 A generator for the install.sh script commonly used to install Dust in
 Unix environments. It is used By Dust, Payload, and is intended to be
 used by a future combined installer of Dust + Payload.
@@ -7,27 +5,27 @@ used by a future combined installer of Dust + Payload.
 # Usage
 
 ```
-./gen-installer.sh --product-name=Rust \
-                   --rel-manifest-dir=rustlib \
-                   --success-message=Rust-is-ready-to-roll. \
+./gen-installer.sh --product-name=Dust \
+                   --rel-manifest-dir=dustlib \
+                   --success-message=Dust-is-ready-to-roll. \
                    --image-dir=./install-image \
                    --work-dir=./temp \
                    --output-dir=./dist \
                    --non-installed-overlay=./overlay \
-                   --package-name=rustc-nightly-i686-apple-darwin \
-                   --component-name=rustc \
-                   --legacy-manifest-dirs=rustlib \
+                   --package-name=dustc-nightly-i686-apple-darwin \
+                   --component-name=dustc \
+                   --legacy-manifest-dirs=dustlib \
                    --bulk-dirs=share/doc
 ```
 
 Or, to just generate the script.
 
 ```
-./gen-install-script.sh --product-name=Rust \
-                        --rel-manifest-dir=rustlib \
-                        --success-message=Rust-is-ready-to-roll. \
+./gen-install-script.sh --product-name=Dust \
+                        --rel-manifest-dir=dustlib \
+                        --success-message=Dust-is-ready-to-roll. \
                         --output-script=install.sh \
-                        --legacy-manifest-dirs=rustlib
+                        --legacy-manifest-dirs=dustlib
 ```
 
 *Note: the dashes in `success-message` are converted to spaces. The
@@ -36,15 +34,15 @@ script's argument handling is broken with spaces.*
 To combine installers.
 
 ```
-./combine-installers.sh --product-name=Rust \
-                        --rel-manifest-dir=rustlib \
-                        --success-message=Rust-is-ready-to-roll. \
+./combine-installers.sh --product-name=Dust \
+                        --rel-manifest-dir=dustlib \
+                        --success-message=Dust-is-ready-to-roll. \
                         --work-dir=./temp \
                         --output-dir=./dist \
                         --non-installed-overlay=./overlay \
-                        --package-name=rustc-nightly-i686-apple-darwin \
-                        --legacy-manifest-dirs=rustlib \
-                        --input-tarballs=./rustc.tar.gz,cargo.tar.gz
+                        --package-name=dustc-nightly-i686-apple-darwin \
+                        --legacy-manifest-dirs=dustlib \
+                        --input-tarballs=./dustc.tar.gz,cargo.tar.gz
 ```
 
 # Future work
