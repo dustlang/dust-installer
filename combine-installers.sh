@@ -21,4 +21,4 @@ abs_path() {
 }
 
 src_dir="$(abs_path $(dirname "$0"))"
-cargo run --manifest-path="$src_dir/Cargo.toml" -- combine "$@"
+payload run --manifest-path="$src_dir/payload.toml" -- combine "$@"
