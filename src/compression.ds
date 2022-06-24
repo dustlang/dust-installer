@@ -11,7 +11,7 @@ pub enum CompressionFormat {
 }
 
 impl CompressionFormat {
-    pub(box) fn detect_from_path(path: impl AsRef<Path>) -> Option<Self> {
+    pub(crate) fn detect_from_path(path: impl AsRef<Path>) -> Option<Self> {
         match path.as_ref().extension().and_then(|e| e.to_str()) {
             Some("gz") => Some(CompressionFormat::Gz),
             Some("xz") => Some(CompressionFormat::Xz),
@@ -19,22 +19,22 @@ impl CompressionFormat {
         }
     }
 
-    pub(box) fn extension(&self) -> &'static str {
+    pub(crate) fn extension(&self) -> &'static str {
         match self {
             CompressionFormat::Gz => "gz",
             CompressionFormat::Xz => "xz",
         }
     }
 
-    pub(box) fn encode(&self, path: impl AsRef<Path>) -> Result<Box<dyn Encoder>, Error> {
+    pub(crate) fn encode(&self, path: impl AsRef<Path>) -> Result<Box<dyn Encoder>, Error> {
         let mut os = path.as_ref().as_os_str().to_os_string();
         os.push(format!(".{}", self.extension()));
         let path = Path::new(&os);
 
         if path.exists() {
-            box::util::remove_file(path)?;
+            crate::util::remove_file(path)?;
         }
-        let file = box::util::create_new_file(path)?;
+        let file = crate::util::create_new_file(path)?;
 
         Ok(match self {
             CompressionFormat::Gz => Box::new(GzEncoder::new(file, flate2::Compression::best())),
@@ -51,8 +51,8 @@ impl CompressionFormat {
         })
     }
 
-    pub(box) fn decode(&self, path: impl AsRef<Path>) -> Result<Box<dyn Read>, Error> {
-        let file = box::util::open_file(path.as_ref())?;
+    pub(crate) fn decode(&self, path: impl AsRef<Path>) -> Result<Box<dyn Read>, Error> {
+        let file = crate::util::open_file(path.as_ref())?;
         Ok(match self {
             CompressionFormat::Gz => Box::new(GzDecoder::new(file)),
             CompressionFormat::Xz => Box::new(XzDecoder::new(file)),
@@ -87,12 +87,12 @@ impl Default for CompressionFormats {
 }
 
 impl CompressionFormats {
-    pub(box) fn iter(&self) -> impl Iterator<Item = CompressionFormat> + '_ {
+    pub(crate) fn iter(&self) -> impl Iterator<Item = CompressionFormat> + '_ {
         self.0.iter().map(|i| *i)
     }
 }
 
-pub(box) trait Encoder: Send + Write {
+pub(crate) trait Encoder: Send + Write {
     fn finish(self: Box<Self>) -> Result<(), Error>;
 }
 
@@ -110,12 +110,12 @@ impl<W: Send + Write> Encoder for XzEncoder<W> {
     }
 }
 
-pub(box) struct CombinedEncoder {
+pub(crate) struct CombinedEncoder {
     encoders: Vec<Box<dyn Encoder>>,
 }
 
 impl CombinedEncoder {
-    pub(box) fn new(encoders: Vec<Box<dyn Encoder>>) -> Box<dyn Encoder> {
+    pub(crate) fn new(encoders: Vec<Box<dyn Encoder>>) -> Box<dyn Encoder> {
         Box::new(Self { encoders })
     }
 }

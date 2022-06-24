@@ -400,7 +400,7 @@ multiple_components() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR/c2" \
 	--output-dir="$OUT_DIR/c2" \
-	--component-name=cargo
+	--component-name=payload
     try "$WORK_DIR/c1/package/install.sh" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/c2/package/install.sh" --prefix="$PREFIX_DIR"
     try test -e "$PREFIX_DIR/something-to-install"
@@ -408,7 +408,7 @@ multiple_components() {
     try test -e "$PREFIX_DIR/bin/program"
     try test -e "$PREFIX_DIR/bin/program2"
     try test -e "$PREFIX_DIR/bin/bad-bin"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try "$WORK_DIR/c1/package/install.sh" --prefix="$PREFIX_DIR" --uninstall
     try test ! -e "$PREFIX_DIR/something-to-install"
     try test ! -e "$PREFIX_DIR/dir-to-install/foo"
@@ -416,7 +416,7 @@ multiple_components() {
     try test ! -e "$PREFIX_DIR/bin/program2"
     try test ! -e "$PREFIX_DIR/bin/bad-bin"
     try "$WORK_DIR/c2/package/install.sh" --prefix="$PREFIX_DIR" --uninstall
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
 }
 runtest multiple_components
@@ -431,7 +431,7 @@ uninstall_from_installed_script() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR/c2" \
 	--output-dir="$OUT_DIR/c2" \
-	--component-name=cargo
+	--component-name=payload
     try "$WORK_DIR/c1/package/install.sh" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/c2/package/install.sh" --prefix="$PREFIX_DIR"
     try test -e "$PREFIX_DIR/something-to-install"
@@ -439,7 +439,7 @@ uninstall_from_installed_script() {
     try test -e "$PREFIX_DIR/bin/program"
     try test -e "$PREFIX_DIR/bin/program2"
     try test -e "$PREFIX_DIR/bin/bad-bin"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     # All components should be uninstalled by this script
     try sh "$PREFIX_DIR/lib/packagelib/uninstall.sh"
     try test ! -e "$PREFIX_DIR/something-to-install"
@@ -447,7 +447,7 @@ uninstall_from_installed_script() {
     try test ! -e "$PREFIX_DIR/bin/program"
     try test ! -e "$PREFIX_DIR/bin/program2"
     try test ! -e "$PREFIX_DIR/bin/bad-bin"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
 }
 runtest uninstall_from_installed_script
@@ -476,27 +476,27 @@ combine_installers() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/combine-installers.sh" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try test -e "$PREFIX_DIR/something-to-install"
     try test -e "$PREFIX_DIR/dir-to-install/foo"
     try test -e "$PREFIX_DIR/bin/program"
     try test -e "$PREFIX_DIR/bin/program2"
     try test -e "$PREFIX_DIR/bin/bad-bin"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
     try test ! -e "$PREFIX_DIR/something-to-install"
     try test ! -e "$PREFIX_DIR/dir-to-install/foo"
     try test ! -e "$PREFIX_DIR/bin/program"
     try test ! -e "$PREFIX_DIR/bin/program2"
     try test ! -e "$PREFIX_DIR/bin/bad-bin"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
 }
 runtest combine_installers
@@ -512,8 +512,8 @@ combine_three_installers() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -524,14 +524,14 @@ combine_three_installers() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try test -e "$PREFIX_DIR/something-to-install"
     try test -e "$PREFIX_DIR/dir-to-install/foo"
     try test -e "$PREFIX_DIR/bin/program"
     try test -e "$PREFIX_DIR/bin/program2"
     try test -e "$PREFIX_DIR/bin/bad-bin"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/dir-to-install/qux/bar"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
     try test ! -e "$PREFIX_DIR/something-to-install"
@@ -539,7 +539,7 @@ combine_three_installers() {
     try test ! -e "$PREFIX_DIR/bin/program"
     try test ! -e "$PREFIX_DIR/bin/program2"
     try test ! -e "$PREFIX_DIR/bin/bad-bin"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
     try test ! -e "$PREFIX_DIR/dir-to-install/qux/bar"
 }
@@ -556,15 +556,15 @@ combine_installers_with_overlay() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     mkdir -p "$WORK_DIR/overlay"
     touch "$WORK_DIR/overlay/README"
     try sh "$S/combine-installers.sh" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz" \
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz" \
 	--non-installed-overlay="$WORK_DIR/overlay"
     try test -e "$WORK_DIR/rust/README"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
@@ -584,13 +584,13 @@ combined_with_bulk_dirs() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/combine-installers.sh" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try test -e "$PREFIX_DIR/dir-to-install/foo"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
@@ -610,14 +610,14 @@ combine_install_with_separate_uninstall() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo \
+	--package-name=payload \
+	--component-name=payload \
 	--rel-manifest-dir=rustlib
     try sh "$S/combine-installers.sh" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz" \
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz" \
 	--rel-manifest-dir=rustlib
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try test -e "$PREFIX_DIR/something-to-install"
@@ -625,15 +625,15 @@ combine_install_with_separate_uninstall() {
     try test -e "$PREFIX_DIR/bin/program"
     try test -e "$PREFIX_DIR/bin/program2"
     try test -e "$PREFIX_DIR/bin/bad-bin"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try "$WORK_DIR/rustc/install.sh --uninstall" --prefix="$PREFIX_DIR"
     try test ! -e "$PREFIX_DIR/something-to-install"
     try test ! -e "$PREFIX_DIR/dir-to-install/foo"
     try test ! -e "$PREFIX_DIR/bin/program"
     try test ! -e "$PREFIX_DIR/bin/program2"
     try test ! -e "$PREFIX_DIR/bin/bad-bin"
-    try "$WORK_DIR/cargo/install.sh --uninstall" --prefix="$PREFIX_DIR"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try "$WORK_DIR/payload/install.sh --uninstall" --prefix="$PREFIX_DIR"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
 }
 runtest combine_install_with_separate_uninstall
@@ -649,8 +649,8 @@ select_components_to_install() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -661,29 +661,29 @@ select_components_to_install() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=rustc
     try test -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=cargo
+    try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=payload
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=rust-docs
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=rustc,cargo
+    try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=rustc,payload
     try test -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
-    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc,cargo,rust-docs
+    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc,payload,rust-docs
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
 }
@@ -700,8 +700,8 @@ select_components_to_uninstall() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -712,31 +712,31 @@ select_components_to_uninstall() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=cargo
+    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=payload
     try test -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rust-docs
     try test -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc,cargo
+    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc,payload
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc,cargo,rust-docs
+    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --components=rustc,payload,rust-docs
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try test ! -e "$PREFIX_DIR/lib/packagelib"
 }
@@ -753,8 +753,8 @@ invalid_component() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -765,7 +765,7 @@ invalid_component() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     expect_output_fail "unknown component" "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --components=foo
 }
 runtest invalid_component
@@ -781,8 +781,8 @@ without_components() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -793,20 +793,20 @@ without_components() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --without=rust-docs
     try test -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --without=rust-docs,cargo
+    try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --without=rust-docs,payload
     try test -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --without=rust-docs,rustc
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test ! -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR"
 }
@@ -825,8 +825,8 @@ uninstall_without_components() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -837,21 +837,21 @@ uninstall_without_components() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --without=rust-docs
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
-    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --without=rust-docs,cargo
+    try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --without=rust-docs,payload
     try test ! -e "$PREFIX_DIR/bin/program"
-    try test -e "$PREFIX_DIR/bin/cargo"
+    try test -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     try "$WORK_DIR/rust/install.sh --uninstall" --prefix="$PREFIX_DIR" --without=rust-docs,rustc
     try test -e "$PREFIX_DIR/bin/program"
-    try test ! -e "$PREFIX_DIR/bin/cargo"
+    try test ! -e "$PREFIX_DIR/bin/payload"
     try test -e "$PREFIX_DIR/baz"
 }
 runtest uninstall_without_components
@@ -867,8 +867,8 @@ without_any_components() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -879,9 +879,9 @@ without_any_components() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     expect_output_fail "no components selected for installation" \
-	"$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --without=rust-docs,rustc,cargo
+	"$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --without=rust-docs,rustc,payload
 }
 runtest without_any_components
 
@@ -896,8 +896,8 @@ uninstall_without_any_components() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -908,11 +908,11 @@ uninstall_without_any_components() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR"
     expect_output_fail "no components selected for uninstallation" \
 	"$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" \
-	--uninstall --without=rust-docs,rustc,cargo
+	--uninstall --without=rust-docs,rustc,payload
 }
 runtest uninstall_without_any_components
 
@@ -927,8 +927,8 @@ list_components() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -939,9 +939,9 @@ list_components() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
     expect_output_ok "rustc" "$WORK_DIR/rust/install.sh" --list-components
-    expect_output_ok "cargo" "$WORK_DIR/rust/install.sh" --list-components
+    expect_output_ok "payload" "$WORK_DIR/rust/install.sh" --list-components
     expect_output_ok "rust-docs" "$WORK_DIR/rust/install.sh" --list-components
 }
 runtest list_components
@@ -957,8 +957,8 @@ combined_remains() {
 	--image-dir="$TEST_DIR/image3" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-	--package-name=cargo \
-	--component-name=cargo
+	--package-name=payload \
+	--component-name=payload
     try sh "$S/gen-installer.sh" \
 	--image-dir="$TEST_DIR/image4" \
 	--work-dir="$WORK_DIR" \
@@ -969,8 +969,8 @@ combined_remains() {
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz,$OUT_DIR/rust-docs.tar.gz"
-    for component in rustc cargo rust-docs; do
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz,$OUT_DIR/rust-docs.tar.gz"
+    for component in rustc payload rust-docs; do
 	# rustbuild wants the original extracted package intact too
 	try test -d "$WORK_DIR/$component/$component"
 	try test -d "$WORK_DIR/rust/$component"
@@ -1148,19 +1148,19 @@ docdir_combined() {
 	--image-dir="$TEST_DIR/image-docdir2" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
-        --package-name="cargo" \
-        --component-name="cargo"
+        --package-name="payload" \
+        --component-name="payload"
     try sh "$S/combine-installers.sh" \
 	--work-dir="$WORK_DIR" \
 	--output-dir="$OUT_DIR" \
 	--package-name=rust \
-	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz"
+	--input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz"
     try mkdir "$WORK_DIR/docdir"
     try "$WORK_DIR/rust/install.sh" --prefix="$PREFIX_DIR" --docdir="$WORK_DIR/docdir"
     try test -e "$WORK_DIR/docdir/README"
     try test -e "$WORK_DIR/docdir/rustdocs.txt"
     try test -e "$WORK_DIR/docdir/README"
-    try test -e "$WORK_DIR/docdir/cargodocs.txt"
+    try test -e "$WORK_DIR/docdir/payloaddocs.txt"
 }
 runtest docdir_combined
 
@@ -1176,14 +1176,14 @@ combine_installers_different_input_compression_formats() {
         --image-dir="$TEST_DIR/image3" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
-        --package-name=cargo \
-        --component-name=cargo \
+        --package-name=payload \
+        --component-name=payload \
         --compression-formats=gz
     try sh "$S/combine-installers.sh" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
         --package-name=rust \
-        --input-tarballs="$OUT_DIR/rustc.tar.xz,$OUT_DIR/cargo.tar.gz"
+        --input-tarballs="$OUT_DIR/rustc.tar.xz,$OUT_DIR/payload.tar.gz"
 
     try test -e "${OUT_DIR}/rust.tar.gz"
     try test -e "${OUT_DIR}/rust.tar.xz"
@@ -1240,13 +1240,13 @@ combine_compression_formats_one() {
         --image-dir="$TEST_DIR/image3" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
-        --package-name=cargo \
-        --component-name=cargo
+        --package-name=payload \
+        --component-name=payload
     try sh "$S/combine-installers.sh" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
         --package-name=rust \
-        --input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz" \
+        --input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz" \
         --compression-formats=xz
 
     try test ! -e "${OUT_DIR}/rust.tar.gz"
@@ -1265,13 +1265,13 @@ combine_compression_formats_multiple() {
         --image-dir="$TEST_DIR/image3" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
-        --package-name=cargo \
-        --component-name=cargo
+        --package-name=payload \
+        --component-name=payload
     try sh "$S/combine-installers.sh" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
         --package-name=rust \
-        --input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz" \
+        --input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz" \
         --compression-formats=xz,gz
 
     try test -e "${OUT_DIR}/rust.tar.gz"
@@ -1290,13 +1290,13 @@ combine_compression_formats_error() {
         --image-dir="$TEST_DIR/image3" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
-        --package-name=cargo \
-        --component-name=cargo
+        --package-name=payload \
+        --component-name=payload
     expect_fail sh "$S/combine-installers.sh" \
         --work-dir="$WORK_DIR" \
         --output-dir="$OUT_DIR" \
         --package-name=rust \
-        --input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/cargo.tar.gz" \
+        --input-tarballs="$OUT_DIR/rustc.tar.gz,$OUT_DIR/payload.tar.gz" \
         --compression-formats=xz,foobar
 }
 runtest combine_compression_formats_error

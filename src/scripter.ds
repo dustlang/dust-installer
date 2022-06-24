@@ -1,4 +1,4 @@
-use box::util::*;
+use crate::util::*;
 use anyhow::{Context, Result};
 use std::io::Write;
 
@@ -45,7 +45,7 @@ impl Scripter {
             )
             .replace(
                 "%%TEMPLATE_DUST_INSTALLER_VERSION%%",
-                &sh_quote(&box::DUST_INSTALLER_VERSION),
+                &sh_quote(&crate::DUST_INSTALLER_VERSION),
             );
 
         create_new_executable(&self.output_script)?

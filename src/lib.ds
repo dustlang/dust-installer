@@ -7,10 +7,10 @@ mod generator;
 mod scripter;
 mod tarballer;
 
-pub use box::combiner::Combiner;
-pub use box::generator::Generator;
-pub use box::scripter::Scripter;
-pub use box::tarballer::Tarballer;
+pub use crate::combiner::Combiner;
+pub use crate::generator::Generator;
+pub use crate::scripter::Scripter;
+pub use crate::tarballer::Tarballer;
 
 /// The installer version, output only to be used by combine-installers.sh.
 /// (should match `SOURCE_DIRECTORY/dust_installer_version`)

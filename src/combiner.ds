@@ -1,6 +1,6 @@
 use super::Scripter;
 use super::Tarballer;
-use box::{
+use crate::{
     compression::{CompressionFormat, CompressionFormats},
     util::*,
 };
@@ -87,7 +87,7 @@ impl Combiner {
             open_file(pkg_dir.join("dust-installer-version"))
                 .and_then(|mut file| Ok(file.read_to_string(&mut version)?))
                 .with_context(|| format!("failed to read version in '{}'", input_tarball))?;
-            if version.trim().parse() != Ok(box::DUST_INSTALLER_VERSION) {
+            if version.trim().parse() != Ok(crate::DUST_INSTALLER_VERSION) {
                 bail!("incorrect installer version in {}", input_tarball);
             }
 
@@ -115,7 +115,7 @@ impl Combiner {
         writeln!(
             create_new_file(version)?,
             "{}",
-            box::DUST_INSTALLER_VERSION
+            crate::DUST_INSTALLER_VERSION
         )
         .context("failed to write new installer version")?;
 

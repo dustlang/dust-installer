@@ -42,7 +42,7 @@ To combine installers.
                         --non-installed-overlay=./overlay \
                         --package-name=dustc-nightly-i686-apple-darwin \
                         --legacy-manifest-dirs=dustlib \
-                        --input-tarballs=./dustc.tar.gz,cargo.tar.gz
+                        --input-tarballs=./dustc.tar.gz,payload.tar.gz
 ```
 
 # Future work

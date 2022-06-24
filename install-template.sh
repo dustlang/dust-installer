@@ -594,7 +594,7 @@ install_components() {
             # path. If the following detects that --docdir has been specified
             # then it will replace everything preceeding the "$product" path
             # component. The problem here is that the combined dust installer
-            # contains two "products": dust and cargo; so the contents of those
+            # contains two "products": dust and payload; so the contents of those
             # directories will both be dumped into the same directory; and the
             # contents of those directories are _not_ disjoint. Since this feature
             # is almost entirely to support 'make install' anyway I don't expect
